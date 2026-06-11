@@ -8,6 +8,7 @@ public class Main {
         CustomerService customerService = new CustomerService();
         customerService.createCustomer("Budi Santoso", "budi@mail.com", "08123456789");
         customerService.createCustomer("Siti Aminah", "siti@mail.com", "08987654321");
+        // customerService.createCustomer("", "null@mail.com", "08000000000");
         
         System.out.println("All Customers:");
 
