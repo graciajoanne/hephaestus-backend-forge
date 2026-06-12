@@ -7,7 +7,7 @@ Jawab pertanyaan berikut dengan bahasa sendiri sebelum membaca materi Spring Boo
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Spring Boot adalah framework berbasis Java untuk membuat aplikasi.
 ```
 
 ### 2. Apa itu REST API?
@@ -15,7 +15,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+REST API adalah pola arsitektur yang memastikan request diproses secara jelas dimana setiap request melewati jalur yang terdefinisi dengan baik, data boundary terkontrol, responsibility terpisah, API mudah dikonsumsi client. Gaya arsitektur ini menjadi standar untuk membangun API dengan memanfaatkan protokol HTTP.
 ```
 
 ### 3. Apa itu HTTP?
@@ -23,7 +23,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+HTTP adalah protokol komunikasi yang digunakan di web tanpa keamanan (tidak seperti HTTPS).
 ```
 
 ### 4. Apa itu JSON?
@@ -31,7 +31,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+JSON adalah jenis file yang digunakan untuk perantara komunikasi, biasanya isinya file yang berpasangan key dan value atau yang disebut Dictionary.
 ```
 
 ### 5. Apa itu endpoint?
@@ -47,7 +47,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Permintaan yang dikirim ke server yang nantinya akan mengembalikan response.
 ```
 
 ### 7. Apa itu response?
@@ -55,7 +55,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Pesan balasan dari server untuk menjawab request yang masuk.
 ```
 
 ### 8. Apa fungsi GET?
@@ -63,7 +63,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Metode yang digunakan untuk mengambil data.
 ```
 
 ### 9. Apa fungsi POST?
@@ -71,7 +71,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Metode yang digunakan untuk menambah data baru.
 ```
 
 ### 10. Apa fungsi PUT?
@@ -79,7 +79,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Metode yang digunakan untuk memperbaharui data.
 ```
 
 ### 11. Apa fungsi DELETE?
@@ -87,7 +87,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Metode yang digunakan untuk menghapus data.
 ```
 
 ### 12. Kapan menggunakan 200 OK?
@@ -95,7 +95,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Ketika request berhasil diproses dan dikembalikan atau status request "sukses".
 ```
 
 ### 13. Kapan menggunakan 201 Created?
@@ -103,7 +103,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Ketika request untuk membuat data baru (biasanya menggunakan POST) berhasil diproses dan data tersebut sukses disimpan di server.
 ```
 
 ### 14. Kapan menggunakan 400 Bad Request?
@@ -111,7 +111,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Ketika request salah, tidak lengkap, atau tidak valid, sehingga server tidak bisa memprosesnya.
 ```
 
 ### 15. Kapan menggunakan 404 Not Found?
@@ -119,7 +119,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Ketika URL yang diakses salah, atau data yang dicari tidak ditemukan di dalam database.
 ```
 
 ### 16. Kapan menggunakan 500 Internal Server Error?
@@ -127,8 +127,10 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Ketika terjadi error, sehingga server gagal memproses permintaan meskipun request sudah benar.
 ```
+
+
 
 ### 17. Apa itu path parameter?
 
@@ -159,7 +161,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Sebagai pintu awal yang menerima request, menentukan fungsi apa yang dipanggil, memvalidasi input awal, dan mengembalikan response kembali.
 ```
 
 ### 21. Apa tugas Service?
@@ -167,7 +169,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Memproses request yang sudah masuk melalui controller yang nantinya akan 
 ```
 
 ### 22. Apa itu DTO?
@@ -175,7 +177,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Data Transfer Object adalah class yang digunakan untuk transfer data antar layer.
 ```
 
 ### 23. Apa itu Model?
@@ -183,7 +185,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Model adalah representatif tabel ke dalam Java.
 ```
 
 ### 24. Kenapa business logic tidak ditaruh di Controller?
@@ -191,7 +193,7 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Karena Controller itu hanya perantara, dan business logic adalahs sesuatu yang tidak boleh berubah. Sehingga jika ada perubahan di Controller business logic tidak berubah. Maka dari itu, business logic dimasukkan di Service.
 ```
 
 ### 25. Kenapa request/response perlu DTO?
@@ -199,5 +201,5 @@ Tulis jawaban di sini.
 Jawaban:
 
 ```text
-Tulis jawaban di sini.
+Agar request dapat ditransfer dari layer satu ke layer lainnya.
 ```
