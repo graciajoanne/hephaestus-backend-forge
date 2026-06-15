@@ -3,7 +3,10 @@ package com.fif.exercisespring.controller;
 import com.fif.exercisespring.dto.CreateCustomerRequest;
 import com.fif.exercisespring.dto.CustomerResponse;
 import com.fif.exercisespring.dto.UpdateCustomerRequest;
+import com.fif.exercisespring.exception.CustomerNotFoundException;
 import com.fif.exercisespring.service.CustomerService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +23,14 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerResponse> createCustomer(@RequestBody CreateCustomerRequest request) {
+    public ResponseEntity<CustomerResponse> createCustomer(@Valid @RequestBody CreateCustomerRequest request) {
         CustomerResponse response = customerService.createCustomer(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponse> getCustomer(@PathVariable Long id) {
+    public ResponseEntity<CustomerResponse> getCustomer(@PathVariable Long id) throws CustomerNotFoundException{
         CustomerResponse response = customerService.getCustomer(id);
-        if (response == null) {return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(response);
     }
 
@@ -49,7 +50,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerResponse> updateCustomer(@PathVariable Long id, @RequestBody UpdateCustomerRequest request) {
+    public ResponseEntity<CustomerResponse> updateCustomer(@PathVariable Long id, @Valid @RequestBody UpdateCustomerRequest request) {
         CustomerResponse response = customerService.updateCustomer(id, request);
         if (response == null) {
             return ResponseEntity.notFound().build();
@@ -58,10 +59,7 @@ public class CustomerController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
-        boolean deleted = customerService.deleteCustomer(id);
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
-        }
+        customerService.deleteCustomer(id);
         return ResponseEntity.noContent().build();
     }
 }

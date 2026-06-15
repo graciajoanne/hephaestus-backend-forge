@@ -3,7 +3,9 @@ package com.fif.exercisespring.service;
 import com.fif.exercisespring.dto.CreateCustomerRequest;
 import com.fif.exercisespring.dto.CustomerResponse;
 import com.fif.exercisespring.dto.UpdateCustomerRequest;
+import com.fif.exercisespring.exception.CustomerNotFoundException;
 import com.fif.exercisespring.model.Customer;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,8 +34,9 @@ public class CustomerService {
 
     public CustomerResponse getCustomer(Long id) {
         Customer customer = customers.get(id);
+
         if (customer == null) {
-            return null;
+            throw new CustomerNotFoundException(id);
         }
         return buildCustomerRespons(customer);
     }
@@ -42,20 +45,25 @@ public class CustomerService {
         return new CustomerResponse(customer.getId(),customer.getFullName(),customer.getEmail(),customer.getPhoneNumber());
     }
 
-    public CustomerResponse updateCustomer(Long id,UpdateCustomerRequest request) {
+    public CustomerResponse updateCustomer(Long id, UpdateCustomerRequest request) {
         Customer customer = customers.get(id);
+
         if (customer == null) {
-            return null;
+            throw new CustomerNotFoundException(id);
         }
+
         customer.setFullName(request.getFullName());
         customer.setEmail(request.getEmail());
         customer.setPhoneNumber(request.getPhoneNumber());
+
         return buildCustomerRespons(customer);
     }
 
-    public boolean deleteCustomer(Long id) {Customer customer = customers.get(id);
+    public boolean deleteCustomer(Long id) {
+        Customer customer = customers.get(id);
+
         if (customer == null) {
-            return false;
+            throw new CustomerNotFoundException(id);
         }
         customers.remove(id);
         return true;
