@@ -2,6 +2,7 @@ package com.fif.exercisespring.controller;
 
 import com.fif.exercisespring.dto.CreateCustomerRequest;
 import com.fif.exercisespring.dto.CustomerResponse;
+import com.fif.exercisespring.dto.PatchCustomerRequest;
 import com.fif.exercisespring.dto.UpdateCustomerRequest;
 import com.fif.exercisespring.exception.CustomerNotFoundException;
 import com.fif.exercisespring.service.CustomerService;
@@ -14,20 +15,32 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/customers")
+@Tag(name = "Customer API",description = "Customer Management API")
 public class CustomerController {
     private final CustomerService customerService;
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
+    @Operation(summary = "Create Customer")
+    @ApiResponse(responseCode = "201", description = "Customer created")
+    @ApiResponse(responseCode = "400", description = "Invalid request")
     @PostMapping
     public ResponseEntity<CustomerResponse> createCustomer(@Valid @RequestBody CreateCustomerRequest request) {
         CustomerResponse response = customerService.createCustomer(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    
+    @Operation(summary = "Get Customer By Id")
+    @ApiResponse(responseCode = "200", description = "Customer found")
+    @ApiResponse(responseCode = "404", description = "Customer not found")
     @GetMapping("/{id}")
     public ResponseEntity<CustomerResponse> getCustomer(@PathVariable Long id) throws CustomerNotFoundException{
         CustomerResponse response = customerService.getCustomer(id);
@@ -40,15 +53,22 @@ public class CustomerController {
     //     );
     // }
 
+    @Operation(summary = "Get All Customers")
+    @ApiResponse(responseCode = "200", description = "Success")
     @GetMapping
-    public ResponseEntity<List<CustomerResponse>> getAllCustomers(@RequestParam(required = false) String name) {
-        if (name != null) {
+    public ResponseEntity<List<CustomerResponse>> getAllCustomers(@RequestParam(required = false) String name, @RequestParam(required = false) String email) {
+        if (email != null && !email.isBlank()) {
+            return ResponseEntity.ok(customerService.searchCustomersByEmail(email));
+        }
+        if (name != null && !name.isBlank()) {
             return ResponseEntity.ok(customerService.searchCustomers(name));
         }
-        return ResponseEntity.ok(customerService.getAllCustomers()
-        );
+        return ResponseEntity.ok(customerService.getAllCustomers());
     }
 
+    @Operation(summary = "Update Customer")
+    @ApiResponse(responseCode = "200", description = "Customer updated")
+    @ApiResponse(responseCode = "404", description = "Customer not found")
     @PutMapping("/{id}")
     public ResponseEntity<CustomerResponse> updateCustomer(@PathVariable Long id, @Valid @RequestBody UpdateCustomerRequest request) {
         CustomerResponse response = customerService.updateCustomer(id, request);
@@ -57,9 +77,22 @@ public class CustomerController {
         }
         return ResponseEntity.ok(response);
     }
+    
+    @Operation(summary = "Delete Customer")
+    @ApiResponse(responseCode = "204", description = "Customer deleted successfully")
+    @ApiResponse(responseCode = "404", description = "Customer not found")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @Operation(summary = "Patch Customer")
+    @ApiResponse(responseCode = "200", description = "Customer patched")
+    @ApiResponse(responseCode = "404",description = "Customer not found")
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomerResponse> patchCustomer(@PathVariable Long id,@RequestBody PatchCustomerRequest request) {
+        CustomerResponse response = customerService.patchCustomer(id, request);
+        return ResponseEntity.ok(response);
     }
 }
