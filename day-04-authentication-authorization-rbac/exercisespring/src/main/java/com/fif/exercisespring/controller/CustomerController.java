@@ -5,9 +5,13 @@ import com.fif.exercisespring.dto.CustomerResponse;
 import com.fif.exercisespring.dto.PatchCustomerRequest;
 import com.fif.exercisespring.dto.UpdateCustomerRequest;
 import com.fif.exercisespring.exception.CustomerNotFoundException;
+import com.fif.exercisespring.service.AuthService;
 import com.fif.exercisespring.service.CustomerService;
+import com.fif.exercisespring.security.AuthUtil;
+import com.fif.exercisespring.security.RoleValidator;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +23,22 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/customers")
 @Tag(name = "Customer API",description = "Customer Management API")
 public class CustomerController {
     private final CustomerService customerService;
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
-
+    private final AuthService authService;
+    
     @Operation(summary = "Create Customer")
     @ApiResponse(responseCode = "201", description = "Customer created")
     @ApiResponse(responseCode = "400", description = "Invalid request")
     @PostMapping
-    public ResponseEntity<CustomerResponse> createCustomer(@Valid @RequestBody CreateCustomerRequest request) {
+    public ResponseEntity<CustomerResponse> createCustomer(@RequestHeader("Authorization") String authorization,@Valid @RequestBody CreateCustomerRequest request) {
+        String token = AuthUtil.extractToken(authorization);
+        String role = authService.getRoleByToken(token);
+        RoleValidator.hasAnyRole(role,"ADMIN","STAFF");
         CustomerResponse response = customerService.createCustomer(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -42,7 +48,10 @@ public class CustomerController {
     @ApiResponse(responseCode = "200", description = "Customer found")
     @ApiResponse(responseCode = "404", description = "Customer not found")
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponse> getCustomer(@PathVariable Long id) throws CustomerNotFoundException{
+    public ResponseEntity<CustomerResponse> getCustomer(@RequestHeader(value = "Authorization", required = false) String authorization, @PathVariable Long id) throws CustomerNotFoundException{
+        String token = AuthUtil.extractToken(authorization);
+        String role = authService.getRoleByToken(token);
+        RoleValidator.hasAnyRole(role,"ADMIN","STAFF","APPROVER");
         CustomerResponse response = customerService.getCustomer(id);
         return ResponseEntity.ok(response);
     }
@@ -56,7 +65,10 @@ public class CustomerController {
     @Operation(summary = "Get All Customers")
     @ApiResponse(responseCode = "200", description = "Success")
     @GetMapping
-    public ResponseEntity<List<CustomerResponse>> getAllCustomers(@RequestParam(required = false) String name, @RequestParam(required = false) String email) {
+    public ResponseEntity<List<CustomerResponse>> getAllCustomers(@RequestHeader("Authorization") String authorization, @RequestParam(required = false) String name, @RequestParam(required = false) String email) {
+        String token = AuthUtil.extractToken(authorization);
+        String role = authService.getRoleByToken(token);
+        RoleValidator.hasAnyRole(role,"ADMIN","STAFF","APPROVER");
         if (email != null && !email.isBlank()) {
             return ResponseEntity.ok(customerService.searchCustomersByEmail(email));
         }

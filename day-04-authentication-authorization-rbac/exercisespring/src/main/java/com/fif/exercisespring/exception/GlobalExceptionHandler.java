@@ -30,6 +30,27 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> unauthorized(UnauthorizedException ex) {
+            ErrorResponse response = new ErrorResponse("UNAUTHORIZED", ex.getMessage(), Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> forbidden(ForbiddenException ex) {
+        ErrorResponse response = new ErrorResponse("FORBIDDEN",ex.getMessage(),Collections.emptyList());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler(LoanApplicationNotFoundException.class)
+    public ResponseEntity<ErrorResponse> loanApplicationNotFound(LoanApplicationNotFoundException ex) {
+        ErrorResponse response = new ErrorResponse("LOAN_APPLICATION_NOT_FOUND",ex.getMessage(),Collections.emptyList());
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(response);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> internalServerError(Exception ex) {
         ErrorResponse response = new ErrorResponse("INTERNAL_SERVER_ERROR","Unexpected error occurred", Collections.emptyList());

@@ -8,7 +8,6 @@ public class Customer {
     private String fullName;
     private String email;
     private String phoneNumber;
-
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
 
