@@ -36,6 +36,7 @@ public class AuthController {
     //     this.authService = authService;
     // }
 
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Login User")
     @ApiResponse(responseCode = "200", description = "Customer success")
     @ApiResponse(responseCode = "401", description = "Invalid username or password")
@@ -58,6 +59,7 @@ public class AuthController {
     //     return ResponseEntity.ok(response);
     // }
 
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Get Current User")
     @ApiResponse(responseCode = "200", description = "Current user information")
     @ApiResponse(responseCode = "401", description = "Invalid token")
